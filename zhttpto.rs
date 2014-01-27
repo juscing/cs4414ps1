@@ -67,8 +67,9 @@ fn main() {
             
             let mut response: ~str = ~"";
             
-            if str::eq(&~"html", &ext.into_owned()) {
+            if path.len() != 0 {
             if p.is_file() {
+            if str::eq(&~"html", &ext.into_owned()) {
 	      match File::open(&Path::new(path)) {
 	      Some(file) => {
 		let mut reader = BufferedReader::new(file);
@@ -79,11 +80,14 @@ fn main() {
 		
 	      }
 	      None =>{
-		response = foo();
+		response = fourothree();
 	      }
 	    }
             } else {
-	      response = foo();
+	      response = fourothree();
+            }
+            } else {
+	      response = fourothree();
             }
             } else {
 	      response = foo();
@@ -107,5 +111,16 @@ fn foo() -> ~str {
                  </style></head>
                  <body>
                  <h1>Greetings, Krusty " + unsafe{visitor_count.to_str()} + "!</h1>
+                 </body></html>\r\n"
+}
+fn fourothree() -> ~str {
+  ~"HTTP/1.1 403 FORBIDDEN\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n
+  <doctype !html><html><head><title>Hello, Rust!</title>
+                 <style>body { background-color: #111; color: #FFEEAA }
+                        h1 { font-size:2cm; text-align: center; color: black; text-shadow: 0 0 4mm red}
+                        h2 { font-size:2cm; text-align: center; color: black; text-shadow: 0 0 4mm green}
+                 </style></head>
+                 <body>
+                 <h1>403 Forbidden!</h1>
                  </body></html>\r\n"
 }
