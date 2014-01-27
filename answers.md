@@ -16,3 +16,5 @@ Accept-Encoding: gzip,deflate,sdch --The types of compressions to send
 Accept-Language: en-US,en;q=0.8 --The types of languages in the request
 
 
+Problem 2.
+Rust probably thinks this is unsafe because of concurrency issues. A web server needs to handle requests concurrently and therefore the varaible may not increment correctly because it creates a race condition.

@@ -22,6 +22,7 @@ static PORT:        int = 4414;
 fn main() {
     let addr = from_str::<SocketAddr>(format!("{:s}:{:d}", IP, PORT)).unwrap();
     let mut acceptor = net::tcp::TcpListener::bind(addr).listen();
+    static mut visitor_count: int = 0;
     
     println(format!("Listening on [{:s}] ...", addr.to_str()));
     
@@ -45,6 +46,7 @@ fn main() {
             let request_str = str::from_utf8(buf);
             println(format!("Received request :\n{:s}", request_str));
             
+            unsafe {visitor_count += 1;}
             let response: ~str = 
                 ~"HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n
                  <doctype !html><html><head><title>Hello, Rust!</title>
@@ -53,7 +55,7 @@ fn main() {
                         h2 { font-size:2cm; text-align: center; color: black; text-shadow: 0 0 4mm green}
                  </style></head>
                  <body>
-                 <h1>Greetings, Krusty!</h1>
+                 <h1>Greetings, Krusty " + unsafe{visitor_count.to_str()} + "!</h1>
                  </body></html>\r\n";
             stream.write(response.as_bytes());
             println!("Connection terminates.");
